@@ -146,7 +146,9 @@ sql.connect(dbConfig).then(pool => {
 
 }).catch(err => console.error('Error de conexión:', err));
 
-app.listen(3000, () => console.log('API corriendo en el puerto 3000'));
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`API corriendo en el puerto ${port}`));
+//app.listen(3000, () => console.log('API corriendo en el puerto 3000'));
 
 
 
