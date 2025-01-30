@@ -436,8 +436,8 @@ app.post('/addDataCambios', verifyToken, async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
     
-    const { id, fechaPeticionModificacion, userPeticionModificacion, emailUserPeticionModificacion, asesor, corsario, recibo, fecha_validacion} = req.body;
-    if (!id && !fechaPeticionModificacion && !userPeticionModificacion && !emailUserPeticionModificacion && !asesor && !corsario && !recibo && !fecha_validacion) {
+    const { id, fechaPeticionModificacion, userPeticionModificacion, emailUserPeticionModificacion, asesor, corsario, recibo, fecha_validacion, notaRazonCambios} = req.body;
+    if (!id && !fechaPeticionModificacion && !userPeticionModificacion && !emailUserPeticionModificacion && !asesor && !corsario && !recibo && !fecha_validacion && !notaRazonCambios) {
         return res.status(400).json({ message: 'Debe enviar al menos un campo para actualizar' });
     }
     try {
@@ -445,8 +445,8 @@ app.post('/addDataCambios', verifyToken, async (req, res) => {
         connectWithRetry();
         console.log(req.body);
         const query = `
-        INSERT INTO controlCambios(id, fecha_peticion_modificacion, user_peticion_modificacion, email_user_peticion_modificacion, Asesor, Corsario, Recibo, fecha_validacion)
-        VALUES (@id, @fechaPeticionModificacion, @userPeticionModificacion, @emailUserPeticionModificacion, @asesor, @corsario, @recibo, @fecha_validacion)
+        INSERT INTO controlCambios(id, fecha_peticion_modificacion, user_peticion_modificacion, email_user_peticion_modificacion, Asesor, Corsario, Recibo, fecha_validacion, notaRazonCambios)
+        VALUES (@id, @fechaPeticionModificacion, @userPeticionModificacion, @emailUserPeticionModificacion, @asesor, @corsario, @recibo, @fecha_validacion, @notaRazonCambios)
         `;
         const request = pool.request()
             .input('id', sql.Int, id)
@@ -457,6 +457,7 @@ app.post('/addDataCambios', verifyToken, async (req, res) => {
             .input('corsario', sql.VarChar, corsario)
             .input('recibo', sql.VarChar, recibo)
             .input('fecha_validacion', sql.DateTime, new Date(fecha_validacion))
+            .input('notaRazonCambios', sql.VarChar, notaRazonCambios)
 
         console.log("params addlogs: ", request.params);
         result = await request.query(query);
@@ -726,5 +727,5 @@ app.put('/updateData/:id', verifyToken, async (req, res) => {
 });
     
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`API corriendo en el puerto ${port}`));
