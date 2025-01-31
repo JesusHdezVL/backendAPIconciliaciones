@@ -1,7 +1,7 @@
 const express = require('express');
 const sql = require('mssql');
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const bodyParser = require('body-parser');
 const { body, validationResult } = require("express-validator");
 const cors = require('cors');
@@ -727,5 +727,5 @@ app.put('/updateData/:id', verifyToken, async (req, res) => {
 });
     
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8080; //8080   3000
 app.listen(port, () => console.log(`API corriendo en el puerto ${port}`));
